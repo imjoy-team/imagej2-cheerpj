@@ -153,40 +153,145 @@
 	<build>
 		<plugins>
 			<plugin>
-				<artifactId>maven-shade-plugin</artifactId>
-				<executions>
-					<execution>
-						<phase>package</phase>
-						<goals>
-							<goal>shade</goal>
-						</goals>
-						<configuration>
-							<shadedClassifierName>all</shadedClassifierName>
-							<createDependencyReducedPom>false</createDependencyReducedPom>
-							<shadedArtifactAttached>true</shadedArtifactAttached>
-							<transformers>
-								<transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-									<resource>META-INF/json/org.scijava.plugin.Plugin</resource>
-								</transformer>
-							</transformers>
-							<filters>
-								<filter>
-									<!--
-										Shading signed JARs will fail without this.
-										http://stackoverflow.com/questions/999489/invalid-signature-file-when-attempting-to-run-a-jar
-									-->
-									<artifact>*:*</artifact>
-									<excludes>
-										<exclude>META-INF/*.DSA</exclude>
-										<exclude>META-INF/*.RSA</exclude>
-										<exclude>META-INF/*.SF</exclude>
-									</excludes>
-								</filter>
-							</filters>
-						</configuration>
-					</execution>
-				</executions>
+				<groupId>com.googlecode.maven-java-formatter-plugin</groupId>
+				<artifactId>maven-java-formatter-plugin</artifactId>
+				<version>0.3.1</version>
+				<configuration>
+					<configFile>${basedir}/config/eclipse-code-formatter-profile.xml</configFile>
+				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.fusesource.mvnplugins</groupId>
+				<artifactId>maven-graph-plugin</artifactId>
+				<configuration>
+					<hideTransitive>false</hideTransitive>
+				</configuration>
+			</plugin>
+			 <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.2.1</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+              		<minimizeJar>true</minimizeJar>
+                    <filters>
+                        <filter>
+                            <artifact>*:*</artifact>
+                            <excludes>
+                                <exclude>META-INF/*.SF</exclude>
+                                <exclude>META-INF/*.DSA</exclude>
+                                <exclude>META-INF/*.RSA</exclude>
+                            </excludes>
+                        </filter>
+                    </filters>
+                </configuration>
+            </plugin>
 		</plugins>
 	</build>
+	<profiles>
+		<profile>
+			<id>deps</id>
+			<!--
+			NB: Include source code for all parts of ImageJ.
+			This list of dependencies needs to remain in sync with the
+			main list of dependencies outside the profiles section,
+			but with <classifier>sources</classifier> for each.
+			-->
+			<dependencies>
+			</dependencies>
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-dependency-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>copy-dependencies</id>
+								<phase>prepare-package</phase>
+								<goals>
+									<goal>copy-dependencies</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>exec-maven-plugin</artifactId>
+						<configuration>
+							<mainClass>org.scijava.util.MetaInfCombiner</mainClass>
+							<arguments>
+								<argument>${basedir}/target/assembly/all/</argument>
+							</arguments>
+						</configuration>
+						<executions>
+							<execution>
+								<phase>package</phase>
+								<goals>
+									<goal>java</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<artifactId>maven-assembly-plugin</artifactId>
+						<configuration>
+							<descriptors>
+								<descriptor>src/main/assembly/all.xml</descriptor>
+							</descriptors>
+							<finalName>imagej2-cheerpj-${project.version}</finalName>
+							<archive>
+								<manifest>
+									<mainClass>${main-class}</mainClass>
+								</manifest>
+							</archive>
+						</configuration>
+						<executions>
+							<execution>
+								<id>make-assembly</id>
+								<phase>package</phase>
+								<goals>
+									<goal>single</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<artifactId>maven-enforcer-plugin</artifactId>
+						<configuration>
+							<rules>
+								<requireReleaseDeps>
+									<excludes>
+										<exclude>${project.groupId}:${project.artifactId}</exclude>
+									</excludes>
+								</requireReleaseDeps>
+
+							</rules>
+
+							<!--
+							Unfortunately, we cannot configure banCircularDependencies
+							to handle the -sources "circular dependency" correctly. In
+							other words, the following does not work:
+
+								<banCircularDependencies>
+									<excludes>
+										<exclude>${project.groupId}:${project.artifactId}</exclude>
+									</excludes>
+								</banCircularDependencies>
+
+							Therefore, we have to force the maven-enforcer-plugin *not*
+							to fail, even if a rule failed.
+							-->
+							<fail>false</fail>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 </project>
