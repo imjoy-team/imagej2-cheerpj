@@ -14,7 +14,10 @@ public final class Main {
 	}
 
 	public static void main(final String... args) {
+		net.imagej.Main.main(args);
+		/*
 		final ImageJ ij = new ImageJ();
 		ij.launch(args);
+		*/
 	}
 }
