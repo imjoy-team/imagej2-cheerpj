@@ -3,6 +3,12 @@ This project wraps a reduced-footprint ImageJ2 to JavaScript using
 
 VERY EARLY PROTOTYPE.
 
+Preparation
+```bash
+conda create -n cheerpj openjdk=8 python=3.7.2
+conda install -c conda-forge maven
+```
+
 1. Download the latest CheerpJ compiler:
     - [Linux](https://d3415aa6bfa4.leaningtech.com/cheerpj_linux_20201013.tar.gz)
     - [MacOS](https://d3415aa6bfa4.leaningtech.com/cheerpj_macosx_20201013.dmg)
