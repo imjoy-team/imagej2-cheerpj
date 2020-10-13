@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <link rel="manifest" href="/manifest.webmanifest" />
+  <meta name="ResourceLoaderDynamicStyles" content="" />
+  <meta name="generator" content="MediaWiki 1.28.0" />
+  <meta name="description"
+    content="ImageJ is an open source image processing program designed for scientific multidimensional images." />
+  <link rel="shortcut icon" href="assets/img/ij2.ico" />
+  <meta property="og:type" content="website" />
+
+  <meta property="og:title" content="ImageJ.JS" />
+
+  <meta property="og:image" content="assets/img/imagej-js-splash.png" />
+
+  <meta property="og:description"
+    content="ImageJ.JS is an open source image processing web application designed for scientific multidimensional images" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>ImageJ.JS</title>
+  <script src="https://cjrtnc.leaningtech.com/20200914/loader.js"></script>
+  <style>
+    body {
+      width: 100vw;
+      height: 100vh;
+      margin: 0px;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    #app {
+      width: 100%;
+      height: 100%;
+    }
+
+    .container {
+      width: calc(100vw);
+      height: calc(100vh);
+      box-shadow: none;
+      overflow: hidden;
+    }
+
+    #cheerpjDisplay {
+      box-shadow: none;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container" id="imagej-container"></div>
+  <script>
+    async function startImageJ() {
+      let preload = localStorage.getItem("cheepjPreload");
+      if (preload) preload = JSON.parse(preload);
+      else preload = [];
+      cheerpjInit({
+        preloadResources: preload,
+        enableInputMethods: true,
+        clipboardMode: "system",
+        enablePreciseClassLoaders: true,
+        javaProperties: ["user.dir=/files", "plugins.dir=/app/plugins"]
+      });
+      const appContainer = document.getElementById("imagej-container");
+      cheerpjCreateDisplay(-1, -1, appContainer);
+      cheerpjRunMain(
+        "io.imjoy.imagej2.Main",
+        "/app/imagej2-cheerpj-0-SNAPSHOT-all.jar"
+      );
+    }
+
+    console.time("Loading ImageJ.JS");
+    startImageJ();
+  </script>
+</body>
+
+</html>
