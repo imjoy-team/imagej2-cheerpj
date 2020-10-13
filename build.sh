@@ -22,4 +22,5 @@ zip -d "$jar" ij/IJ.class
 mv "$backup" "$jar"
 
 cp -rp dist target/dist
+mv "$jar" target/dist
 mv "$jar".js target/dist
