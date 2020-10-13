@@ -196,7 +196,7 @@
 		</plugins>
 	</build>
 	<profiles>
-	<profile>
+		<profile>
 			<id>deps</id>
 			<!--
 			NB: Include source code for all parts of ImageJ.
