@@ -10,8 +10,7 @@ test -f "$CHEERPJ_EXEC" || {
 # Install cheerpj-dom.jar
 mvn install:install-file -Dfile=${CHEERPJ_HOME}/cheerpj-dom.jar -DgroupId=com.learningtech -DartifactId=cheerpj-dom -Dversion=1.0 -Dpackaging=jar
 
-mvn clean
-mvn -Pdeps package
+mvn clean package
 
 jar=target/imagej2-cheerpj-0-SNAPSHOT-all.jar 
 
