@@ -63,9 +63,20 @@ rm -rf "$WORKDIR"
 # HACK: Restore ij.IJ class.
 mv -f "$backup" "$ij1"
 
+# Copy JAR files into application folder.
 cp -rp dist "$distdir"
 mv "$jardir/"* "$distdir"
 rmdir "$jardir"
+
+# Remove Class-Path entries from JAR files; they confuse CheerpJ.
+for f in "$distdir"/*.jar
+do
+  echo "$f: tweaking manifest"
+  jar xf "$f" META-INF/MANIFEST.MF
+  zip -d "$f" META-INF/MANIFEST.MF
+  perl -0777 -i -pe "s/\nClass-Path: [^\n]*(\n [^\n]*)*//igs" META-INF/MANIFEST.MF
+  jar ufm "$f" META-INF/MANIFEST.MF
+done
 
 # Splice in the dependencies list to index.html.
 mv "$distdir/$mainjar" "$distdir/$mainjar.moved"
