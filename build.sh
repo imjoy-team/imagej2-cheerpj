@@ -76,6 +76,7 @@ do
   zip -d "$f" META-INF/MANIFEST.MF
   perl -0777 -i -pe "s/\nClass-Path: [^\n]*(\n [^\n]*)*//igs" META-INF/MANIFEST.MF
   jar ufm "$f" META-INF/MANIFEST.MF
+  rm -rf META-INF
 done
 
 # Splice in the dependencies list to index.html.

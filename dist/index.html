@@ -3,7 +3,6 @@
 
 <head>
   <meta charset="utf-8" />
-  <link rel="manifest" href="/manifest.webmanifest" />
   <meta name="ResourceLoaderDynamicStyles" content="" />
   <meta name="generator" content="MediaWiki 1.28.0" />
   <meta name="description"
@@ -58,7 +57,7 @@
         enableInputMethods: true,
         clipboardMode: "system",
         enablePreciseClassLoaders: true,
-        javaProperties: ["user.dir=/files", "plugins.dir=/app/plugins"]
+        javaProperties: ["user.dir=/files", "plugins.dir=/app/plugins", "scijava.log.level=debug"]
       });
       const appContainer = document.getElementById("imagej-container");
       cheerpjCreateDisplay(-1, -1, appContainer);
