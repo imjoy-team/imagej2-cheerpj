@@ -24,10 +24,10 @@ cp "target/$mainjar" "$jardir"
 mkdir -p "$logdir"
 
 # HACK: Remove ij.IJ before cheerpjfying, to avoid Javassist issues.
-ij1=$(echo "$jardir/"ij-1.*.jar)
-backup="$ij1.original"
-cp "$ij1" "$backup"
-zip -d "$ij1" ij/IJ.class
+#ij1=$(echo "$jardir/"ij-1.*.jar)
+#backup="$ij1.original"
+#cp "$ij1" "$backup"
+#zip -d "$ij1" ij/IJ.class
 
 # TODO: `find src/main/java -type f` and remove all non-io.imjoy.imagej2
 # classes from every JAR being processed, in the same way we remove ij.IJ.
@@ -61,7 +61,7 @@ done
 rm -rf "$WORKDIR"
 
 # HACK: Restore ij.IJ class.
-mv -f "$backup" "$ij1"
+#mv -f "$backup" "$ij1"
 
 # Copy JAR files into application folder.
 cp -rp dist "$distdir"

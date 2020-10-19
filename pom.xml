@@ -96,11 +96,27 @@
 			<exclusions>
 				<exclusion>
 					<groupId>net.imagej</groupId>
+					<artifactId>imagej-launcher</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>net.imagej</groupId>
 					<artifactId>imagej-mesh-io</artifactId>
 				</exclusion>
 				<exclusion>
 					<groupId>net.imagej</groupId>
+					<artifactId>imagej-notebook</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>net.imagej</groupId>
 					<artifactId>imagej-deprecated</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>net.imagej</groupId>
+					<artifactId>imagej-ops</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>net.imagej</groupId>
+					<artifactId>imagej-plugins-batch</artifactId>
 				</exclusion>
 				<exclusion>
 					<groupId>net.imagej</groupId>
@@ -113,6 +129,10 @@
 				<exclusion>
 					<groupId>net.imagej</groupId>
 					<artifactId>imagej-scripting</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>net.imagej</groupId>
+					<artifactId>imagej-updater</artifactId>
 				</exclusion>
 				<exclusion>
 					<groupId>org.scijava</groupId>
@@ -143,10 +163,6 @@
 					<artifactId>script-editor</artifactId>
 				</exclusion>
 			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>net.imagej</groupId>
-			<artifactId>imagej-legacy</artifactId>
 		</dependency>
 	</dependencies>
 </project>
